@@ -1,6 +1,6 @@
-import img1 from './Jeanne.JPG';
-import img2 from './Martine.JPG';
-import img3 from './Claude.JPG';
+import imgage1 from './Jeanne.JPG';
+import imgage2 from './Martine.JPG';
+import imgage3 from './Claude.JPG';
 import './App.css';
 import { useState } from 'react';
 
@@ -9,38 +9,35 @@ const profil = [
         prenom: "Jeanne",
         nom: "D'arc",
         date: "30 janvier 1995",
-        image: img1,
+        image: imgage1,
         publication: { content: "Hey, j'adore la guitare !" }
     },
     {
         prenom: "Martine",
         nom: "Dupond",
         date: "17 septembre 1975",
-        image: img2,
+        image: imgage2,
         publication: { content: "Hey, j'adore le PS !" }
     },
     {
         prenom: "Claude",
         nom: "Pastis",
         date: "08 mars 1969",
-        image: img3,
+        image: imgage3,
         publication: { content: "Hey, j'adore les cocktails" }
     }
 ];
 
 const App = () => {
-    const [monProfil, setmonProfil] = useState(profil[0])
-    const [color, setColored] = useState("white");
+    const [monProfil, setmonProfil] = useState(profil[0]) //par défaut on affiche le profil 1
+    const [color, setColored] = useState("white"); //par défaut la couleur est blanche
 
-    const handleProfileClick = prenom => {
-        const profileClicked = profil.filter(p => p.prenom === prenom)[0] //on parcours les profils pour trouver le prenom qui correspond
-        setmonProfil(profileClicked) //on récupère les données
-    }
-
-    const handleBackgroundChange = () => {
+    const backgroundChange = () => {
         setColored(color === "thistle" ? "white" : "thistle") // change la couleur du profil
     }
-    const buttons = profil.map(p => <Button content={p.prenom} callback={handleProfileClick}></Button>)
+    const buttons = profil.map(p => <Button content={p.prenom} callback={prenom => {const profileClicked = profil.filter(p => p.prenom === prenom)[0]
+        setmonProfil(profileClicked)
+    }}></Button>) //on appelle la fonction Button
 
     return (
         <div className="App">
@@ -61,7 +58,7 @@ const App = () => {
                         <h3>{monProfil.date}</h3>
                     </div>
                     <div class="mt-5 d-flex justify-content-end">
-                        <Button callback={handleBackgroundChange} content="Changer de style"></Button>
+                        <Button callback={backgroundChange} content="Changer de style"></Button>
                     </div>
                 </div>
             </div>
@@ -81,21 +78,19 @@ const App = () => {
     );
 }
 
-const Button = ({ content, clickable, callback }) => {
-    //const [clicked, setClicked] = useState(false);
+const Button = ({ content, callback }) => {
     var text = content //on reprend les infos
     var handleClick
     if (callback) {
         handleClick = () => callback(content)
     }
     return (
-        <button
-            className="button"
-            onClick={handleClick}
-        >
+        <button className="button" onClick={handleClick}>
             {text}
         </button>
     )
 }
 
 export default App;
+
+//j'ai été beaucoup aidé par Rémy du TD02A parce que j'avais des difficultés pour récupérer les données de chaque profil
